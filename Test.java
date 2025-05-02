@@ -1,34 +1,43 @@
-
 public class Test {
     public static void main(String[] args) {
+
         PhotoManager manager = new PhotoManager();
-        
-        Photo photo1 = new Photo("hedgehog.jpg", toTagsLinkedList("animal, hedgehog, apple, grass, green"));
+
+        Photo photo1 = new Photo("hedgehog.jpg",toTagsLinkedList("animal, hedgehog, apple, grass, green"));
         manager.addPhoto(photo1);
-        
-        Photo photo2 = new Photo("bear.jpg", toTagsLinkedList("animal, bear, cab, grass, wind"));
+
+        Photo photo2 = new Photo("bear.jpg",toTagsLinkedList("animal, bear, cab, grass, wind"));
         manager.addPhoto(photo2);
-        
-        Photo photo3 = new Photo("orange-butterfly.jpg", toTagsLinkedList("insect, butterfly, flower, color"));
+
+        Photo photo3 = new Photo("orange-butterfly.jpg",toTagsLinkedList("insect, butterfly, flower, color"));
         manager.addPhoto(photo3);
-        
+
         Album album1 = new Album("Album1", "bear", manager);
         Album album2 = new Album("Album2", "animal AND grass", manager);
-        
+
         System.out.println("Get photo1 path and tags:");
         System.out.println("photo1 path: " + photo1.getPath());
-        System.out.println("photo1 tags: " + getTagsAsString(photo1.getTags()));
-        
-        System.out.println("\nGet album2 name, condition, and photos:");
+
+        //You can get the list of tags of photo1 by calling photo1.getTags().
+        LinkedList<String> tags = photo1.getTags();
+
+        //You can write a method that prints the list of tags of photo1.
+        System.out.println(photo1.getPath());
+        printLL(tags);
+
+        System.out.println("\n\nGet album2 name, condition, and photos:");
         System.out.println("album2 name: " + album2.getName());
         System.out.println("album2 condition: " + album2.getCondition());
-        System.out.println("album2 photos: " + getPhotosAsString(album2.getPhotos()));
-        
-        System.out.println("\nDelete the photo 'bear.jpg':");
+
+        //You can get the list of photos in album2 by calling album2.getPhotos().
+        LinkedList<Photo> photos = album2.getPhotos();
+
+        //You can write a method that prints the list of photos in album2.
+        System.out.println(album2.getCondition());
+        printLLPhoto(photos);
+
+        System.out.println("Delete the photo ’bear.jpg’:");
         manager.deletePhoto("bear.jpg");
-        
-        // Verify deletion
-        System.out.println("\nAfter deletion, album2 photos: " + getPhotosAsString(album2.getPhotos()));
     }
 
     private static LinkedList<String> toTagsLinkedList(String tags) {
@@ -40,31 +49,30 @@ public class Test {
         return result;
     }
 
-    // Helper method to print tags
-    private static String getTagsAsString(LinkedList<String> tags) {
-        if (tags.empty()) return "[]";
-        
-        StringBuilder sb = new StringBuilder("[");
-        tags.findFirst();
-        while (!tags.last()) {
-            sb.append(tags.retrieve()).append(", ");
-            tags.findNext();
+    private static void printLL(LinkedList<String> list){
+        list.findFirst();
+        if(list.empty())
+            return;
+        while(true)
+        {
+            System.out.print(list.retrieve() + " ");
+            if(list.last())
+                return;
+            list.findNext();
         }
-        sb.append(tags.retrieve()).append("]");
-        return sb.toString();
     }
 
-    // Helper method to print photo paths
-    private static String getPhotosAsString(LinkedList<Photo> photos) {
-        if (photos.empty()) return "[]";
-        
-        StringBuilder sb = new StringBuilder("[");
-        photos.findFirst();
-        while (!photos.last()) {
-            sb.append(photos.retrieve().getPath()).append(", ");
-            photos.findNext();
+    private static void printLLPhoto(LinkedList<Photo> list){
+        list.findFirst();
+        if(list.empty())
+            return;
+        while(true)
+        {
+            System.out.println(list.retrieve().getPath());
+            if(list.last())
+                return;
+            list.findNext();
         }
-        sb.append(photos.retrieve().getPath()).append("]");
-        return sb.toString();
     }
+
 }
